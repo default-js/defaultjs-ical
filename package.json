@@ -1,0 +1,47 @@
+{
+  "name": "defaultjs-ical",
+  "version": "1.0.0-beta.1",
+  "description": "parse ical to json",
+  "main": "./index.js",
+  "scripts": {
+    "build": "npm test && webpack --config webpack.prod.js && webpack --config webpack.dev.js",
+    "dev-server": "webpack-dev-server --open --config webpack.dev-server.js && npm run karma:live",
+    "karma:live": "karma start karma.live-dev.js",
+    "karma:integration": "karma start karma.integration.js",
+    "test": "npm run karma:integration"
+  },
+  "keywords": [],
+  "author": "Frank Schüler",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "jasmine-core": "^3.5.0",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-firefox-launcher": "^1.2.0",
+    "karma-html2js-preprocessor": "^1.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.5",
+    "puppeteer": "^1.20.0",
+    "replace-in-file-webpack-plugin": "^1.0.6",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/default-js/defaultjs-ical.git"
+  },
+  "bugs": {
+    "url": "https://github.com/default-js/defaultjs-ical/issues"
+  },
+  "homepage": "https://github.com/default-js/defaultjs-ical#readme",
+  "dependencies": {},
+  "directories": {
+    "test": "test"
+  }
+}
