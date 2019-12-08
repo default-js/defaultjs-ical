@@ -1,4 +1,4 @@
-const REGEX = /^([^:]):(.+)$|^.+$/m;
+const REGEX = /([^:]+):(.+)\r?\n/m;
 const Tokenizer = function(aText){
 	let text = aText;
 	let match = null;	
@@ -13,7 +13,7 @@ const Tokenizer = function(aText){
 			return match;
 		},
 		next : function(){
-			match = REGEX.exec(aText);
+			match = REGEX.exec(text);
 			if(typeof match === "undefined" || match == null )
 				return null;
 			

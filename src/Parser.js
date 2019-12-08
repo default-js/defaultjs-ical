@@ -5,7 +5,7 @@ const parseProperty = function(aTokenizer){
 };
 
 const ObjectTypes = {		
-	 VCALENDAR : function(aTokenizer, aContext){
+	 VCALENDAR : function(aTokenizer){
 		 
 	 },
 	 VEVENT : function(aTokenizer, aContext){
@@ -13,21 +13,26 @@ const ObjectTypes = {
 	 }	
 };
 
-const parse = function(aText){
-	let data = undefined;
-	const tokenizer = new Tokenizer(aText);
-	let match = tokenizer.next();
+const parse = function(aTokinizer, aContext){
+	let match = aTokinizer.next();
 	while(match != null){
 		if(match[1] == "BEGIN"){
 			let parser = ObjectTypes[match[2]];
 			if(typeof parser !== "undefined"){
-				let object = parseObject(tokenizer, data);
-				if(typeof data === "undefined")
-					data = object;	
+				let object = parser(tokenizer, data);
+				if(typeof aContext === "undefined")
+					return object	
 			}
 		}
-	}
-	
-	return data;		
+		match = tokenizer.next();
+	}		
 };
-export default parse;
+
+const Parser = {
+	parse : function(aText){
+		return parse(new Tokenizer(aText))
+	}
+};
+
+
+export default Parser;
