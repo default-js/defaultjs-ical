@@ -1,7 +1,8 @@
-const REGEX = /([^:]+):(.+)\r?\n/m;
+const REGEX = /([^:;]+)(;([^:]+))?:(.+)\r?\n/m;
 const Tokenizer = function(aText){
 	let text = aText;
-	let match = null;	
+	let token = null;	
+	let progression = 0;
 	return {		
 		text : function(){
 			return text;
@@ -9,16 +10,30 @@ const Tokenizer = function(aText){
 		skip : function(length){
 			text = text.slice(length);
 		},
-		match : function(){
+		token : function(){
 			return match;
 		},
+		progression : function(){
+			return progression;
+		},
 		next : function(){
-			match = REGEX.exec(text);
+			const match = REGEX.exec(text);
 			if(typeof match === "undefined" || match == null )
 				return null;
-			
+			progression =+ match[0].length;
 			text = text.slice(match[0].length);			
-			return match;
+			token = {
+				key: match[1],
+				value: match[4],
+				metadata : match[3],
+				input: match[0],
+				__regexmatch : match
+			};
+			
+			return token;
+		},
+		clone : function(){
+			return new Tokenizer(text);
 		}
 	};	
 };
