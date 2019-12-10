@@ -2,6 +2,7 @@ BEGIN:VCALENDAR
 VERSION:2.0
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
+ORGANIZER;CN="Alice Balder, Example Inc.":MAILTO:alice@example.com
 SUMMARY:Access-A-Ride Pickup
 DTSTART;TZID=America/New_York:20130802T103400
 DTEND;TZID=America/New_York:20130802T110400
@@ -16,7 +17,10 @@ ACTION:DISPLAY
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Access-A-Ride Pickup
+ORGANIZER;CN="Alice Balder, Example Inc.":MAILTO:alice@example.com
+SUMMARY:1. Access-A-Ride Pickup
+ 2. test test
+ 3. test test
 DTSTART;TZID=America/New_York:20130802T200000
 DTEND;TZID=America/New_York:20130802T203000
 LOCATION:900 Jay St.\, Brooklyn

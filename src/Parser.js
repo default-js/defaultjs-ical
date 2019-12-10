@@ -1,10 +1,17 @@
+//https://tools.ietf.org/html/rfc5545#section-3.1
 import Tokenizer from "./Tokenizer";
 
 const parseProperty = function(aToken, aTokenizer){
-	return aToken.value.trim();
+	if(typeof aToken.value === "string")
+		return aToken.value.trim();
+	
+	return aToken.value;
 };
 
 const append = function(aKey, aData, aContext){
+	if(typeof aData === "undefined")
+		return;
+	
 	let key = aKey.toLowerCase().trim();	
 	if(typeof aContext[key] === "undefined")
 		aContext[key] = aData;
