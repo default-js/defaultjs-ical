@@ -1,21 +1,25 @@
 const REGEX_KEY = /^([^\s:;]+)(;([^:]+))?:(.+)$/;
 const REGEX_VALUELINE = /^(\s+.+)$/;
 
-const getParams = function(text){
-	if(text == null || typeof text === "undefined")
+const KEY_VALUE_SPLIT = /:/;
+const PARAM_SPLIT = /;/;
+const PARAM_VALUE_SPLIT = /=/;
+
+const getParameter = function(aText){
+	if(aText == null || typeof aText === "undefined")
 		return;
-	
+	let items = aText.split(PARAM_SPLIT);	
 	let params = {};
-	text.split(/;/g).forEach(function(item){
-		let param = item.split(/=/g);
-		params[param[0]] = typeof param[1] !== "undefined" ? param[1] : ""; 
-	});
+	for(let i = 0; i < items.length; i++){
+		let parts = items[i].split(PARAM_VALUE_SPLIT);
+		params[parts[0]] = parts[1];
+	}	
 	
 	return params;
 };
 
 const getValue = function(aValue, aTokenizer){
-	let value = aValue;
+	let value = aValue;	
 	let match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index()]);
 	while(match != null && typeof match !== "undefined" && match.length > 0){		
 		value += match[1];
@@ -28,15 +32,23 @@ const getValue = function(aValue, aTokenizer){
 
 
 const Deserializer = function(aLine, aTokenizer){
-	const match = REGEX_KEY.exec(aLine);
-	if(typeof match === "undefined" || match == null )
-		return null;
+	let index = aLine.search(KEY_VALUE_SPLIT);
+	if(index == -1)
+		return;
 	
-	return {
-		key: match[1],
-		value: getValue(match[4], aTokenizer),
-		parameter : getParams(match[3])
-	};	
+	let result = {
+			key : aLine.substring(0, index),
+			value : getValue(aLine.substring(index + 1), aTokenizer)
+	};
+	
+	index = result.key.search(PARAM_SPLIT);
+	if(index != -1){
+		result.parameter = getParameter(result.key.substring(index + 1));
+		result.key = result.key.substring(0, index);
+	}
+		
+	
+	return result
 };
 
 export default Deserializer;
