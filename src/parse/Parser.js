@@ -5,8 +5,9 @@ const BEGIN_TOKEN = /^begin$/i;
 const END_TOKEN = /^end$/i;
 
 const parseProperty = function(aToken, aConfig){
-	if(typeof aConfig.propertyparser !== "undefined" && typeof aConfig.propertyparser[aToken.key] === "function"){
-		const result = aConfig.propertyparser[aToken.key](aToken);
+	const key = aToken.key.toLowerCase();
+	if(typeof aConfig.mapper !== "undefined" && typeof aConfig.mapper[key] === "function"){
+		const result = aConfig.mapper[key](aToken);
 		return result instanceof Promise ? result : Promise.resolve(result);
 	}
 	

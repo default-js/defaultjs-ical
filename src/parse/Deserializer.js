@@ -12,7 +12,7 @@ const getParameter = function(aText){
 	let params = {};
 	for(let i = 0; i < items.length; i++){
 		let parts = items[i].split(PARAM_VALUE_SPLIT);
-		params[parts[0]] = parts[1];
+		params[parts[0].toLowerCase()] = parts[1];
 	}	
 	
 	return params;
