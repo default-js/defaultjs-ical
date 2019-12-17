@@ -1,5 +1,5 @@
-const REGEX_KEY = /^([^\s:;]+)(;([^:]+))?:(.+)$/;
-const REGEX_VALUELINE = /^(\s+.+)$/;
+//const REGEX_KEY = /^([^\s:;]+)(;([^:]+))?:(.+)$/;
+const REGEX_VALUELINE = /^\s+(.+)$/;
 
 const KEY_VALUE_SPLIT = /:/;
 const PARAM_SPLIT = /;/;
@@ -20,9 +20,9 @@ const getParameter = function(aText){
 
 const getValue = function(aValue, aTokenizer){
 	let value = aValue;	
-	let match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index()]);
+	let match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index() + 1]);
 	while(match != null && typeof match !== "undefined" && match.length > 0){		
-		value += match[1];
+		value += "\n" + match[1];
 		aTokenizer.skip();		
 		match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index()]);
 	}

@@ -3,6 +3,6 @@ document.querySelector("#test-parse").addEventListener("click", function() {
 	.then(function(res){
 		return res.text();
 	}).then(function(text){
-		console.log(defaultjs.ical.Parser(text));
+		defaultjs.ical.ICalendar.parse(text).then(console.log);
 	});	
 });
