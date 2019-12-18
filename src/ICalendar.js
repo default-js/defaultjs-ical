@@ -39,6 +39,7 @@ const buildConfig = function(aConfig){
 
 
 const Parser = {
+	"default" : defaultconfig,
 	parse : function(aText, aConfig){
 		return parse(aText, buildConfig(aConfig));
 	}
