@@ -20,7 +20,7 @@ const Tokenizer = function(theLines, aIndex){
 		lines : function(){
 			return lines;
 		},
-		next : function(){
+		next : function(){			
 			index++;
 			if(index < lines.length)
 				token = Deserializer(lines[index], this);

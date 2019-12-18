@@ -5,17 +5,25 @@ const BEGIN_TOKEN = /^begin$/i;
 const END_TOKEN = /^end$/i;
 
 const parseProperty = function(aToken, aConfig){
-	const key = aToken.key.toLowerCase();
-	if(typeof aConfig.mapper !== "undefined" && typeof aConfig.mapper[key] === "function"){
-		const result = aConfig.mapper[key](aToken);
-		return result instanceof Promise ? result : Promise.resolve(result);
+	try{
+		const key = aToken.key.toLowerCase();
+		if(typeof aConfig.propertyparser !== "undefined" && typeof aConfig.propertyparser[key] === "function"){
+			const result = aConfig.propertyparser[key](aToken);
+			if(typeof result !== "undefined")
+				return result instanceof Promise ? result : Promise.resolve(result);
+		}
+	}catch (e){
+		console.error(e)
 	}
 	
-	return Promise.resolve({
-		"_type_" : "property",
-		"parameter" : aToken.parameter,
-		"value" : aToken.value
-	});
+	if(aConfig.onlyPropertyValues)
+		return  Promise.resolve(aToken.value);	
+	else	
+		return Promise.resolve({
+			"_type_" : "property",
+			"parameter" : aToken.parameter,
+			"value" : aToken.value
+		});
 };
 
 const parseToken = function(aToken, aTokenizer, aConfig, aContext){	
@@ -49,7 +57,12 @@ const parse = function(aTokenizer, aConfig, aContext){
 };
 
 
-const Parser = function(aText, aConfig){	
-	return parse(new Tokenizer(aText), (aConfig || {}));
+const Parser = function(aText, aConfig){
+	return parse(new Tokenizer(aText), (aConfig || {})).then(function(aResult){
+		if(typeof aConfig.map === "function")
+			return Promise.resolve(aConfig.map(aResult));
+		
+		return Promise.resolve(aResult);
+	});
 };
 export default Parser;

@@ -24,7 +24,7 @@ const getValue = function(aValue, aTokenizer){
 	while(match != null && typeof match !== "undefined" && match.length > 0){		
 		value += "\n" + match[1];
 		aTokenizer.skip();		
-		match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index()]);
+		match = REGEX_VALUELINE.exec(aTokenizer.lines()[aTokenizer.index() + 1]);
 	}
 	
 	return value;
