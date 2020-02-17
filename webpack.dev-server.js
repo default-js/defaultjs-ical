@@ -9,12 +9,11 @@ module.exports = merge(common, {
     optimization : {
 	    usedExports : true
     },
-    devtool : 'source-map',
+    devtool : 'inline-source-map',
     devServer : {
         contentBase : './WebContent',
         hot : true,
-        quiet : true,
-        port : 80
+        quiet : true
     },
     output : {
 	    filename : project.buildname + '.js',

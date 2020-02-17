@@ -1,7 +1,7 @@
 import Deserializer from "./Deserializer";
 
 const Tokenizer = function(theLines, aIndex){
-	let lines = theLines;
+	const lines = theLines;
 	let index = aIndex || -1;
 	let token = null;
 	return {
@@ -35,5 +35,5 @@ const Tokenizer = function(theLines, aIndex){
 	};	
 };
 export default function(aText){
-	return new Tokenizer(aText.split(/\r?\n/g))
+	return new Tokenizer(aText.split(/\r?\n/g).filter(line => line.trim().length > 0))
 };

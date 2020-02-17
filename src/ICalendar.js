@@ -1,9 +1,9 @@
 import parse from "./Parser";
-import Utils from "./Utils";
+import ObjectUtils from "@default-js/defaultjs-common-utils/src/ObjectUtils";
 
 
 const DATETIME = /(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/;
-const toDateTime = function(aToken){
+const toDateTime = aToken => {
 	const match = DATETIME.exec(aToken.value);
 	if(!match)
 		return aToken.value;
@@ -18,7 +18,7 @@ const toDateTime = function(aToken){
 const defaultconfig = {
 	onlyPropertyValues: true,
 	propertyparser : {
-		organizer : function(aToken){
+		organizer : aToken => {
 			return {
 				name : /([^"]+)/i.exec(aToken.parameter["cn"])[1],
 				mail : /^(mailto:)?(.+)$/i.exec(aToken.value)[2]		
@@ -33,14 +33,13 @@ const buildConfig = function(aConfig){
 	if(typeof aConfig === "undefined" || aConfig == null)
 		return defaultconfig;
 	
-	return Utils.updateObject({}, defaultconfig, aConfig);
+	return ObjectUtils.merge({}, defaultconfig, aConfig);
 };
 
 
 
 const Parser = {
-	"default" : defaultconfig,
-	parse : function(aText, aConfig){
+	parse : (aText, aConfig) => {
 		return parse(aText, buildConfig(aConfig));
 	}
 };

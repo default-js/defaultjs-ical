@@ -1,5 +1,5 @@
 import Tokenizer from "./Tokenizer";
-import Utils from "./Utils";
+import ObjectUtils from "@default-js/defaultjs-common-utils/src/ObjectUtils";
 
 const BEGIN_TOKEN = /^begin$/i;
 const END_TOKEN = /^end$/i;
@@ -31,24 +31,23 @@ const parseToken = function(aToken, aTokenizer, aConfig, aContext){
 		return Promise.resolve(aContext);
 	else if(BEGIN_TOKEN.test(aToken.key))
 		return parse(aTokenizer, aConfig, {})
-		.then(function(aResult){
+		.then(result => {
 			if(typeof aContext === "undefined")
-				return Promise.resolve(aResult);
+				return Promise.resolve(result);
 			
-			return Utils.appendToObject(aToken.value.toLowerCase(), aResult, aContext)
-			.then(parse.bind(null,aTokenizer, aConfig));
+			const context = ObjectUtils.append(aToken.value.toLowerCase(), result, aContext);
+			return parse(aTokenizer, aConfig, context);
 		});
 	 else {
 		return parseProperty(aToken, aConfig)
-		.then(function(aValue){
-			return Utils.appendToObject(aToken.key.toLowerCase(), aValue, aContext);
-		}).then(parse.bind(null ,aTokenizer, aConfig));
+		.then(value => ObjectUtils.append(aToken.key.toLowerCase(), value, aContext))
+		.then(context => parse(aTokenizer, aConfig, context));
 	}
 };
 
 const parse = function(aTokenizer, aConfig, aContext){
 	return aTokenizer.next()
-	.then(function(aToken){
+	.then(aToken => {
 		if(aToken)
 			return parseToken(aToken, aTokenizer, aConfig, aContext);
 			
@@ -58,11 +57,12 @@ const parse = function(aTokenizer, aConfig, aContext){
 
 
 const Parser = function(aText, aConfig){
-	return parse(new Tokenizer(aText), (aConfig || {})).then(function(aResult){
-		if(typeof aConfig.map === "function")
-			return Promise.resolve(aConfig.map(aResult));
-		
-		return Promise.resolve(aResult);
-	});
+	return parse(new Tokenizer(aText), (aConfig || {}))
+		.then(aResult => {
+			if(typeof aConfig.map === "function")
+				return Promise.resolve(aConfig.map(aResult));
+			
+			return Promise.resolve(aResult);
+		});
 };
 export default Parser;
