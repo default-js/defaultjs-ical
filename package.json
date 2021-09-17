@@ -1,7 +1,7 @@
 {
 	"name": "@default-js/defaultjs-ical",
 	"buildname": "defaultjs-ical",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "parse ical to json",
 	"main": "./index.js",
 	"scripts": {
@@ -49,6 +49,7 @@
 	},
 	"files": [
 		"index.js",
+		"browser.js",
 		"src/**",
 		"LICENSE",
 		"README.md"

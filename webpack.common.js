@@ -1,5 +1,10 @@
 const path = require('path');
 
+const entries = {};
+entries["module"] = "./index.js";
+entries["browser"] = "./browser.js";
+
 module.exports = {
-	entry : './index.js'
+	entry: entries,
+	target: "web"
 };
