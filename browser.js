@@ -1,11 +1,11 @@
-import pack from "./src"
+import {Parser, ICalendar} from "./src"
 
 const global = window || global || self || this || {};
 global.defaultjs = global.defaultjs || {};
 global.defaultjs.ical = global.defaultjs.ical || {
 	VERSION : "${version}",
-	Parser : pack.Parser,
-	ICalendar : pack.ICalendar
+	Parser,
+	ICalendar
 };
 
 if(typeof global.fetch === "function" 
@@ -15,7 +15,9 @@ if(typeof global.fetch === "function"
 	global.Response.prototype.ical = function(aConfig){
 		return this.text()
 		.then(function(aText){
-			return pack.ICalendar.parse(aText, aConfig);
+			return ICalendar.parse(aText, aConfig);
 		});
 	}
 };
+
+export {Parser, ICalendar};
